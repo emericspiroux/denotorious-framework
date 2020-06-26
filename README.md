@@ -1,4 +1,4 @@
-# denotorious-framework
+# Denotorious Framework
 The most notorious framework for DenoJS
 
 ## Hello World
