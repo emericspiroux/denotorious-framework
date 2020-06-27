@@ -56,3 +56,20 @@ export default db.getModel("<Your model name>")
 ```
 
 Check [`Example/models/todo.ts`](https://github.com/emericspiroux/denotorious-framework/blob/master/Example/Models/Todo.ts) for further inspirations
+
+### How to use a model
+You can directly use your model like specified into DenoJS MongoDB module documentation : https://deno.land/x/mongo
+
+```
+static async getTodo(ctx:any) {
+    const { id } = ctx.params as { id: string };
+    let todo = await TodoModel.findOne({ _id: { "$oid": id } })
+    if (todo)
+      ctx.response.body = todo;
+    else
+      throw new ErrorHandler("Todo element not found", 404);
+}
+```
+
+## More DenoJS modules
+To get more DenoJS module, you can go to the page https://deno.land/x and looking for any module you want !
