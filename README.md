@@ -52,4 +52,4 @@ import db from '../Lib/Helpers/db.ts'
 export default db.getModel("<Your model name>")
 ```
 
-Check `./Example/models/todo.ts` for further inspirations
+Check [`Example/models/todo.ts`](https://github.com/emericspiroux/denotorious-framework/blob/master/Example/Models/Todo.ts) for further inspirations
