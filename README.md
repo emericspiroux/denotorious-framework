@@ -38,7 +38,7 @@ throw new ErrorHandler("Succeed to test error", 500)
 
 This method permit to display internal errors inside terminal and return handled thrown errors inside response body!
 
-=> We will implement object support next
+👨‍🎓 We will implement object support soon
 
 ## Mongo DB
 Worked with version `>=4.2.8`
