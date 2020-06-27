@@ -5,8 +5,11 @@ const router = new Router({
   prefix: '/todo'
 })
 
-router.get('/', async (context:any) => {
-          context.response.body = await TodoController.getTodos()
-        })
+router.get('/', TodoController.getTodos)
+      .get('/:id', TodoController.getTodo)
+      .post('/', TodoController.addTodo)
+      .patch('/:id', TodoController.updateTodo)
+      .delete('/', TodoController.deleteAllTodo)
+      .delete('/:id', TodoController.deleteTodo)
 
 export default router

@@ -1,38 +1,64 @@
-import Todo from '../Types/Todo.ts'
-import { UpdateResult } from "https://deno.land/x/mongo@v0.8.0/mod.ts";
-import TodoModel from '../Models/Todo.ts'
-
-interface TodoController {
-  getTodos(): Promise<Todo[]>,
-  getTodo(_id:string):Promise<Todo>,
-  addTodo(todo: Todo):Promise<Todo>,
-  updateTodo(todo:Todo):Promise<UpdateResult>,
-  deleteTodo(_id: string):Promise<number>
-}
+import {Response, Request, RouteParams} from 'https://deno.land/x/oak/mod.ts'
+import TodoModel, {Todo} from '../Models/Todo.ts'
+import {ErrorHandler} from '../Lib/Helpers/ErrorHandler.ts'
 
 class TodoController {
 
-  static async getTodos():Promise<Todo[]> {
-    return await TodoModel.find()
+  static async getTodos(ctx:any) {
+    let todoElements = await TodoModel.find()
+    let todoObjects = []
+    for (let todoElement of todoElements) {
+      let newTodoObject = new Todo(todoElement)
+      todoObjects.push(newTodoObject.toObject())
+    }
+    ctx.response.body = todoObjects
   }
 
-  static async getTodo(_id: string):Promise<Todo> {
-    return await TodoModel.findOne({_id})
+  static async getTodo(ctx:any) {
+      const { id } = ctx.params as { id: string };
+      let todo = Todo.fromMongo(await TodoModel.findOne({ _id: { "$oid": id } }))
+      if (todo.id)
+        ctx.response.body = todo.toObject();
+      else
+        throw new ErrorHandler("Todo element not found", 404);
   }
 
-  static async addTodo(todo: Todo):Promise<Todo> {
-    return await TodoModel.insertOne(todo)
+  static async addTodo({request, response} : {request:Request, response:Response}) {
+    let body = (await request.body()).value
+    let todo = Todo.fromMongo(await TodoModel.insertOne({
+      title: body.title,
+      createdAt: new Date()
+    }))
+    await todo.fill()
+    response.body = todo.toObject()
   }
 
-  static async updateTodo(todo: Todo):Promise<UpdateResult> {
-    return await TodoModel.updateOne(
-      { _id: todo._id },
-      { $set: todo },
+  static async updateTodo({params, request, response} : {params:RouteParams, request:Request, response:Response}) {
+    let body = (await request.body()).value
+    const { id } = params as { id: string };
+    await TodoModel.updateOne(
+      { _id: { "$oid": id } },
+      { $set: {
+        title: body.title,
+        updatedAt: new Date()
+      } },
     )
+    let todo = new Todo({
+      id: id
+    })
+    await todo.fill()
+    response.body = todo.toObject()
   }
 
-  static async deleteTodo(_id: string):Promise<number> {
-    return await TodoModel.deleteOne({_id})
+  static async deleteTodo({params, response} : {params:RouteParams, response:Response}) {
+    const { id } = params as { id: string };
+    response.body = {success: !!await TodoModel.deleteOne({ _id: { "$oid": id } })}
+  }
+
+  static async deleteAllTodo({params, response} : {params:RouteParams, response:Response}) {
+    const { id } = params as { id: string };
+    let count = await TodoModel.deleteMany({})
+    response.body = {success: !!count, count}
   }
 }
 
