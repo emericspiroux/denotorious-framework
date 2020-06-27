@@ -1,6 +1,10 @@
 # Denotorious Framework
 The most notorious framework for DenoJS
 
+This framework will help you to not wasting time to beginning a new DenoJS project.
+
+Easyness, Simpleness and efficiency in a same folder.
+
 ## Hello World
 
 First, install DenoJs package : https://deno.land/#installation
