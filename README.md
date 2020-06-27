@@ -2,6 +2,9 @@
 The most notorious framework for DenoJS
 
 ## Hello World
+
+First, install DenoJs package : https://deno.land/#installation
+
 Launch `./start.sh` to begin adventure!
 
 Go to `http://localhost:8000` and check if `json` object is displayed _(It content is a secret 🤫)_
