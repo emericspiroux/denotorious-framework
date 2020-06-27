@@ -27,7 +27,7 @@ const router = new Router({
 })
 ```
 
-### Error Handling
+## Error Handling
 Denotorious Framework come with an errors middleware handler simply called ErrorHandler that you can use as following:
 
 ```
