@@ -7,5 +7,5 @@ DenotoriousInit.init(app)
 
 const port = Number(Deno.env.get("PORT")) || 8000
 
-console.log(`Application ${Deno.env.get('VERSION')} running on port ${port}`)
+console.log(`Application ${Deno.env.get('VERSION') || "1.0.0"} running on port ${port}`)
 await app.listen({ port })

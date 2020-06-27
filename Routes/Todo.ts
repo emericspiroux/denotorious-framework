@@ -8,8 +8,5 @@ const router = new Router({
 router.get('/', async (context:any) => {
           context.response.body = await TodoController.getTodos()
         })
-      .get('/test', async (context:any) => {
-        context.response.body = await TodoController.getTodos()
-      })
 
 export default router

@@ -23,8 +23,8 @@ class Database {
   }
 }
 
-const dbName = Deno.env.get("MONGO_DB_NAME") || "library";
-const dbHostUrl = Deno.env.get("MONGO_URL") || "mongodb://localhost:27017";
+const dbName = Deno.env.get("MONGO_DB_NAME") || "denotorious";
+const dbHostUrl = Deno.env.get("MONGO_DB_URL") || "mongodb://localhost:27017";
 const db = new Database(dbName, dbHostUrl);
 db.connect();
 
